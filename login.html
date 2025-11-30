@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Owner Login | RentEase</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .overlay-box {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .nav-tabs .nav-link {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: #0d6efd;
+      color: white;
+      border-radius: 6px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+
+    label {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <a href="home1.html" class="btn btn-primary">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+
+<!-- Main Container -->
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="overlay-box">
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs nav-justified mb-4">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#loginTab">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#registerTab">Register</a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Login Form -->
+      <div class="tab-pane fade show active" id="loginTab">
+        <form id="loginForm" novalidate>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" id="loginEmail" required>
+            <div class="invalid-feedback">Enter a valid email.</div>
+          </div>
+          <div class="mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" id="loginPassword" required>
+            <div class="invalid-feedback">Password is required.</div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <div class="text-end mt-2">
+            <a href="#" class="text-decoration-none">Forgot password?</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div class="tab-pane fade" id="registerTab">
+        <form id="registerForm" novalidate>
+          <div class="mb-3">
+            <label>Full Name</label>
+            <input type="text" class="form-control" id="regName" required>
+            <div class="invalid-feedback">Name is required.</div>
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" id="regEmail" required>
+            <div class="invalid-feedback">Valid email is required.</div>
+          </div>
+          <div class="mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" id="regPassword" required minlength="6">
+            <div class="invalid-feedback">Minimum 6 characters.</div>
+          </div>
+          <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" id="regConfirm" required>
+            <div class="invalid-feedback" id="confirmFeedback">Passwords must match.</div>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript Validation -->
+<script>
+  // Login Validation
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail");
+    const password = document.getElementById("loginPassword");
+
+    if (!email.value || !email.checkValidity()) {
+      email.classList.add("is-invalid");
+    } else {
+      email.classList.remove("is-invalid");
+    }
+
+    if (!password.value) {
+      password.classList.add("is-invalid");
+    } else {
+      password.classList.remove("is-invalid");
+    }
+
+    if (email.checkValidity() && password.value) {
+      alert("Login successful!");
+    }
+  });
+
+  // Register Validation
+  document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = document.getElementById("regName");
+    const email = document.getElementById("regEmail");
+    const password = document.getElementById("regPassword");
+    const confirm = document.getElementById("regConfirm");
+    const confirmFeedback = document.getElementById("confirmFeedback");
+
+    let valid = true;
+
+    if (!name.value) {
+      name.classList.add("is-invalid");
+      valid = false;
+    } else {
+      name.classList.remove("is-invalid");
+    }
+
+    if (!email.value || !email.checkValidity()) {
+      email.classList.add("is-invalid");
+      valid = false;
+    } else {
+      email.classList.remove("is-invalid");
+    }
+
+    if (!password.value || password.value.length < 6) {
+      password.classList.add("is-invalid");
+      valid = false;
+    } else {
+      password.classList.remove("is-invalid");
+    }
+
+    if (confirm.value !== password.value) {
+      confirm.classList.add("is-invalid");
+      confirmFeedback.textContent = "Passwords must match.";
+      valid = false;
+    } else {
+      confirm.classList.remove("is-invalid");
+    }
+
+    if (valid) {
+      alert("Registration successful!");
+    }
+  });
+</script>
+
+</body>
+</html>

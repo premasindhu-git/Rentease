@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings | Property Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --glass: rgba(255, 255, 255, 0.25);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .settings-container {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .settings-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .settings-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .settings-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: white;
+        }
+        
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-header i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .card-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input {
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1><i class="fas fa-cog"></i> Admin Settings</h1>
+            <p>Manage your property management system configurations</p>
+        </div>
+        
+        <div class="settings-grid">
+            <!-- Account Settings Card -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-user-shield"></i>
+                    <h2>Admin Access</h2>
+                </div>
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" class="form-control" placeholder="admin@yourdomain.com" value="admin@sunriseapts.com">
+                </div>
+                <div class="form-group">
+                    <label>Two-Factor Authentication</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Login Attempts Before Lockout</label>
+                    <select class="form-control">
+                        <option>3 attempts</option>
+                        <option selected>5 attempts</option>
+                        <option>10 attempts</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Session Timeout</label>
+                    <select class="form-control">
+                        <option>15 minutes</option>
+                        <option selected>30 minutes</option>
+                        <option>1 hour</option>
+                        <option>Never</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-block">Update Security Settings</button>
+            </div>
+            
+            <!-- Property Settings Card -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-building"></i>
+                    <h2>Property Configuration</h2>
+                </div>
+                <div class="form-group">
+                    <label>Default Property Type</label>
+                    <select class="form-control">
+                        <option>Apartment</option>
+                        <option selected>Residential Complex</option>
+                        <option>PG/Hostel</option>
+                        <option>Commercial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Enable Automatic Unit Numbering</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Default Rent Collection Day</label>
+                    <select class="form-control">
+                        <option>1st of month</option>
+                        <option selected>5th of month</option>
+                        <option>10th of month</option>
+                        <option>15th of month</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Allowed Property Documents</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="doc1" checked>
+                            <label for="doc1">Lease Agreements</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="doc2" checked>
+                            <label for="doc2">ID Proof</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="doc3">
+                            <label for="doc3">Income Proof</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block">Update Property Settings</button>
+            </div>
+            
+            <!-- Notification Settings Card -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <i class="fas fa-bell"></i>
+                    <h2>Notifications & Alerts</h2>
+                </div>
+                <div class="form-group">
+                    <label>System Notifications</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Rent Reminder Notifications</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Maintenance Alerts</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Notification Methods</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="method1" checked>
+                            <label for="method1">Email</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="method2">
+                            <label for="method2">SMS</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="method3" checked>
+                            <label for="method3">In-App</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Critical Alert Email</label>
+                    <input type="email" class="form-control" placeholder="alerts@yourdomain.com" value="alerts@sunriseapts.com">
+                </div>
+                <button class="btn btn-primary btn-block">Update Notification Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced toggle switch functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Save button functionality
+            const saveButtons = document.querySelectorAll('.btn-primary');
+            
+            saveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.settings-card');
+                    const title = card.querySelector('h2').textContent;
+                    
+                    // Create a temporary confirmation message
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    this.style.backgroundColor = '#4BB543';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.backgroundColor = '';
+                    }, 2000);
+                });
+            });
+            
+            // Toggle switch visual feedback
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const slider = this.nextElementSibling;
+                    if(this.checked) {
+                        slider.style.backgroundColor = '#4361ee';
+                    } else {
+                        slider.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
